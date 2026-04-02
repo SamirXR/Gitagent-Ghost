@@ -25,13 +25,27 @@ Built by **[Samir](https://samir-yzy.vercel.app/)** for the GitAgent Hackathon b
 
 Ghost operates in a deterministic, layered pipeline. Since it relies purely on AST parsing and LLM logic without system-level binaries, it is 100% compatible with WebContainer serverless environments like **Clawless**.
 
-1. **Ingestion Phase:** The `gitagent-parser` tool scans the target repo and compiles `SOUL.md`, `RULES.md`, and all `SKILL.md` files into a single JSON payload.
+1. **Ingestion Phase:** The [`gitagent-parser`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/tools) tool scans the target repo and compiles `SOUL.md`, `RULES.md`, and all `SKILL.md` files into a single JSON payload.
 2. **Analysis Phase:**
-   - `contradiction-scan`: Compares rules against identity.
-   - `scope-creep-detect`: Validates skills against the agent's stated mission.
-   - `rule-completeness`: Checks for missing foundational guardrails.
-3. **Attack Phase:** `boundary-probe` generates adversarial prompts (prompt injections, jailbreaks) specifically designed to test the target's constraints.
-4. **Scoring & Reporting:** `risk-scorecard` evaluates the findings and passes them to `security-report`, which outputs a color-coded AVSS (Agent Vulnerability Scoring System) document along with auto-remediation patches.
+   - [`contradiction-scan`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/contradiction-scan): Compares rules against identity.
+   - [`scope-creep-detect`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/scope-creep-detect): Validates skills against the agent's stated mission.
+   - [`rule-completeness`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/rule-completeness): Checks for missing foundational guardrails.
+3. **Attack Phase:** [`boundary-probe`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/boundary-probe) generates adversarial prompts (prompt injections, jailbreaks) specifically designed to test the target's constraints.
+4. **Reasoning & Reflection (CoT):**
+   - [`exploit-path-simulator`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/exploit-path-simulator): Sequences multi-step attack trees using Chain of Thought.
+   - [`peer-review-critic`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/peer-review-critic): Acts as Devil's Advocate to filter out false positives and downgrade impractical attacks.
+5. **Scoring & Reporting:** [`risk-scorecard`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/risk-scorecard) evaluates the findings and passes them to [`security-report`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/security-report), which outputs a color-coded AVSS (Agent Vulnerability Scoring System) document along with auto-remediation patches.
+
+---
+
+## What Makes Ghost Stand Out?
+
+Ghost isn't just a static linter for text files—it is a fully autonomous **Red-Team Agent** built to exploit boundaries like a human hacker.
+
+* **Chain of Thought (CoT) Attack Modeling:** The [`exploit-path-simulator`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/exploit-path-simulator) skill actively reasons through multi-step attack vectors, chaining seemingly harmless actions and tool permissions together to form critical exploits.
+* **Self-Reflection & False Positive Filtering:** With the [`peer-review-critic`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/peer-review-critic) skill, Ghost plays Devil's Advocate against *itself*, reviewing its own generated attack paths to eliminate false positives before they reach the final AVSS report.
+* **100% Serverless / WebContainer Native:** Designed to execute zero system-level binaries, making it natively compatible with WebContainers like Clawless.
+* **Auto-Remediation:** It doesn't just point out flaws. It generates the exact `git diff` patch needed to secure the target agent.
 
 ---
 
@@ -39,12 +53,14 @@ Ghost operates in a deterministic, layered pipeline. Since it relies purely on A
 
 | Skill | Description |
 | :--- | :--- |
-| **`contradiction-scan`** | Finds logical conflicts between `SOUL.md`, `RULES.md`, and skills. |
-| **`boundary-probe`** | Generates adversarial prompts (jailbreaks) that test rule enforcement. |
-| **`scope-creep-detect`** | Detects capabilities that exceed the agent's declared mission. |
-| **`rule-completeness`** | Identifies missing hard boundaries and constraints. |
-| **`risk-scorecard`** | Quantifies attack success rate and enforces a release gate. |
-| **`security-report`** | Produces a severity-rated remediation report in AVSS format. |
+| **[`contradiction-scan`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/contradiction-scan)** | Finds logical conflicts between `SOUL.md`, `RULES.md`, and skills. |
+| **[`exploit-path-simulator`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/exploit-path-simulator)** | Uses Chain of Thought to construct multi-step attack paths. |
+| **[`peer-review-critic`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/peer-review-critic)** | Acts as a Devil's Advocate to filter out false positives and critique findings. |
+| **[`boundary-probe`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/boundary-probe)** | Generates adversarial prompts (jailbreaks) that test rule enforcement. |
+| **[`scope-creep-detect`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/scope-creep-detect)** | Detects capabilities that exceed the agent's declared mission. |
+| **[`rule-completeness`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/rule-completeness)** | Identifies missing hard boundaries and constraints. |
+| **[`risk-scorecard`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/risk-scorecard)** | Quantifies attack success rate and enforces a release gate. |
+| **[`security-report`](https://github.com/SamirXR/Gitagent-Ghost/tree/main/ghost/skills/security-report)** | Produces a severity-rated remediation report in AVSS format. |
 
 ---
 
@@ -59,6 +75,8 @@ ghost-agent/
 ├── RULES.md             # Strict constraints and formatting requirements
 ├── skills/
 │   ├── contradiction-scan/
+│   ├── exploit-path-simulator/
+│   ├── peer-review-critic/
 │   ├── boundary-probe/
 │   ├── scope-creep-detect/
 │   ├── rule-completeness/
