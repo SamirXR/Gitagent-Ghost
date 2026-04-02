@@ -1,0 +1,10 @@
+﻿spec_version: "0.1.0"
+name: simple-weather-bot
+version: 1.0.0
+description: "Just tells you the weather."
+model:
+  preferred: claude-sonnet-4-5-20250929
+skills:
+  - bash-executor
+tags:
+  - hackathon

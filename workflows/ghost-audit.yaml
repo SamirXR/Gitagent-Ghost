@@ -1,0 +1,92 @@
+name: ghost-audit
+description: Deterministic security audit flow for gitagent repositories.
+version: 1.0.0
+inputs:
+  - name: target_repo
+    type: string
+    description: Path to the gitagent repository to audit.
+    required: true
+  - name: strict_mode
+    type: boolean
+    description: Escalate on medium findings when true.
+    required: false
+    default: true
+outputs:
+  - name: security_report
+    type: object
+    description: Final severity-rated report and release verdict.
+steps:
+  - id: parse
+    action: Parse target manifest, policy files, and skill metadata.
+    tool: gitagent-parser
+    inputs:
+      root: "${{ inputs.target_repo }}"
+      include_skills: true
+    outputs: [parsed_agent]
+    compliance:
+      requires_approval: false
+      audit_level: detailed
+
+  - id: contradiction_scan
+    action: Find cross-file contradictions that weaken policy guarantees.
+    skill: contradiction-scan
+    depends_on: [parse]
+    inputs:
+      target_repo: "${{ inputs.target_repo }}"
+    outputs: [contradiction_findings]
+
+  - id: boundary_probe
+    action: Generate adversarial prompts to test rule-boundary integrity.
+    skill: boundary-probe
+    depends_on: [parse]
+    inputs:
+      target_repo: "${{ inputs.target_repo }}"
+    outputs: [probe_suite]
+
+  - id: scope_creep
+    action: Detect capability drift beyond declared mission.
+    skill: scope-creep-detect
+    depends_on: [parse]
+    inputs:
+      target_repo: "${{ inputs.target_repo }}"
+    outputs: [scope_findings]
+
+  - id: rule_completeness
+    action: Identify missing hard boundaries and enforcement clauses.
+    skill: rule-completeness
+    depends_on: [parse]
+    inputs:
+      target_repo: "${{ inputs.target_repo }}"
+    outputs: [completeness_findings]
+
+  - id: risk_scorecard
+    action: Convert findings into a quantitative risk gate and regression scorecard.
+    skill: risk-scorecard
+    depends_on: [contradiction_scan, boundary_probe, scope_creep, rule_completeness]
+    inputs:
+      contradictions: "${{ steps.contradiction_scan.outputs.contradiction_findings }}"
+      probes: "${{ steps.boundary_probe.outputs.probe_suite }}"
+      scope: "${{ steps.scope_creep.outputs.scope_findings }}"
+      completeness: "${{ steps.rule_completeness.outputs.completeness_findings }}"
+      strict_mode: "${{ inputs.strict_mode }}"
+    outputs: [risk_scorecard]
+
+  - id: report
+    action: Compile findings into a severity-rated report with verdict.
+    skill: security-report
+    depends_on: [contradiction_scan, boundary_probe, scope_creep, rule_completeness, risk_scorecard]
+    inputs:
+      contradictions: "${{ steps.contradiction_scan.outputs.contradiction_findings }}"
+      probes: "${{ steps.boundary_probe.outputs.probe_suite }}"
+      scope: "${{ steps.scope_creep.outputs.scope_findings }}"
+      completeness: "${{ steps.rule_completeness.outputs.completeness_findings }}"
+      scorecard: "${{ steps.risk_scorecard.outputs.risk_scorecard }}"
+      strict_mode: "${{ inputs.strict_mode }}"
+    outputs: [security_report]
+    compliance:
+      requires_approval: false
+      audit_level: full
+
+error_handling:
+  on_step_failure: escalate
+  escalation_target: repository-owner

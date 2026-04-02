@@ -1,0 +1,40 @@
+name: file-reader
+description: Read policy and skill files from a target gitagent repository for evidence collection.
+version: 0.1.0
+input_schema:
+  type: object
+  properties:
+    root:
+      type: string
+      description: Relative or absolute path to target repository root.
+    paths:
+      type: array
+      description: List of file paths to read from the target repository.
+      items:
+        type: string
+    max_bytes:
+      type: integer
+      description: Maximum bytes to read per file.
+      default: 200000
+output_schema:
+  type: object
+  properties:
+    files:
+      type: array
+      items:
+        type: object
+        properties:
+          path:
+            type: string
+          content:
+            type: string
+          size_bytes:
+            type: integer
+implementation:
+  type: script
+  path: file-reader.js
+  runtime: node
+annotations:
+  requires_confirmation: false
+  read_only: true
+  cost: low

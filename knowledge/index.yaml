@@ -1,0 +1,9 @@
+documents:
+  - path: hackathon-rubric.md
+    tags: [hackathon, judging, strategy]
+    priority: high
+    always_load: true
+  - path: gitagent-resource-checklist.md
+    tags: [hackathon, resources, cli, adapters, compliance]
+    priority: high
+    always_load: true

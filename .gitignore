@@ -1,0 +1,6 @@
+node_modules/
+.gitagent/
+.env
+.env.*
+npm-debug.log*
+.lyzr_agent_id

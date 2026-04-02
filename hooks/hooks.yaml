@@ -1,0 +1,9 @@
+hooks:
+  pre_tool_use:
+    - script: scripts/guard-cli.js
+      description: Block destructive command patterns.
+      compliance: true
+  post_response:
+    - script: scripts/enforce-output.js
+      description: Keep response structure predictable for demo playback.
+      compliance: true

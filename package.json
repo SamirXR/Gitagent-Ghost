@@ -1,0 +1,35 @@
+{
+  "name": "ghost-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AI red-team auditor agent for the GitAgent Hackathon",
+  "scripts": {
+    "validate": "npx --yes @open-gitagent/gitagent@0.1.5 validate",
+    "validate:compliance": "npx --yes @open-gitagent/gitagent@0.1.5 validate --compliance",
+    "info": "npx --yes @open-gitagent/gitagent@0.1.5 info",
+    "audit": "npx --yes @open-gitagent/gitagent@0.1.5 audit",
+    "export:prompt": "npx --yes @open-gitagent/gitagent@0.1.5 export -f system-prompt",
+    "export:system-prompt": "npx --yes @open-gitagent/gitagent@0.1.5 export -f system-prompt",
+    "export:claude-code": "npx --yes @open-gitagent/gitagent@0.1.5 export -f claude-code",
+    "export:openai": "npx --yes @open-gitagent/gitagent@0.1.5 export -f openai",
+    "export:crewai": "npx --yes @open-gitagent/gitagent@0.1.5 export -f crewai",
+    "export:openclaw": "npx --yes @open-gitagent/gitagent@0.1.5 export -f openclaw",
+    "export:nanobot": "npx --yes @open-gitagent/gitagent@0.1.5 export -f nanobot",
+    "export:lyzr": "npx --yes @open-gitagent/gitagent@0.1.5 export -f lyzr",
+    "export:github": "npx --yes @open-gitagent/gitagent@0.1.5 export -f github",
+    "run:claude": "npx --yes @open-gitagent/gitagent@0.1.5 run -a claude -d .",
+    "run:github": "npx --yes @open-gitagent/gitagent@0.1.5 run -a github -d .",
+    "lyzr:create": "npx --yes @open-gitagent/gitagent@0.1.5 lyzr create -d .",
+    "lyzr:update": "npx --yes @open-gitagent/gitagent@0.1.5 lyzr update -d .",
+    "lyzr:info": "npx --yes @open-gitagent/gitagent@0.1.5 lyzr info -d .",
+    "lyzr:run": "npx --yes @open-gitagent/gitagent@0.1.5 lyzr run",
+    "lyzr:bootstrap": "node scripts/lyzr-bootstrap.mjs",
+    "demo": "node scripts/demo-gitclaw.mjs",
+    "tool:file-reader": "node tools/file-reader.js",
+    "tool:parser": "node tools/gitagent-parser.js"
+  },
+  "dependencies": {
+    "gitclaw": "^1.1.0"
+  }
+}

@@ -1,0 +1,36 @@
+spec_version: "0.1.0"
+name: ghost
+version: 0.1.0
+description: "AI red-team auditor for gitagent agents that detects contradictions, policy gaps, and jailbreak vectors."
+author: samir
+license: MIT
+model:
+  preferred: anthropic:claude-sonnet-4-5-20250929
+  fallback:
+    - openai:gpt-4o
+  constraints:
+    temperature: 0.1
+    max_tokens: 4096
+skills:
+  - contradiction-scan
+  - boundary-probe
+  - scope-creep-detect
+  - rule-completeness
+  - security-report
+tools:
+  - file-reader
+  - gitagent-parser
+runtime:
+  max_turns: 50
+  timeout: 240
+delegation:
+  mode: auto
+tags:
+  - hackathon
+  - security
+  - red-team
+  - gitagent
+metadata:
+  architecture: layered-audit
+  node_compatible: true
+  target_runtime: gitclaw-clawless

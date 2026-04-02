@@ -1,0 +1,88 @@
+spec_version: "0.1.0"
+name: ghost
+version: 0.1.0
+description: "AI red-team auditor for gitagent agents that detects contradictions, policy gaps, and jailbreak vectors."
+author: samir
+license: MIT
+model:
+  preferred: anthropic:claude-sonnet-4-5-20250929
+  fallback:
+    - openai:gpt-4o
+  constraints:
+    temperature: 0.1
+    max_tokens: 4096
+skills:
+  - contradiction-scan
+  - boundary-probe
+  - scope-creep-detect
+  - rule-completeness
+  - risk-scorecard
+  - security-report
+tools:
+  - file-reader
+  - gitagent-parser
+runtime:
+  max_turns: 50
+  timeout: 240
+compliance:
+  risk_tier: standard
+  frameworks:
+    - finra
+    - sec
+  supervision:
+    designated_supervisor: repository-owner
+    review_cadence: monthly
+    human_in_the_loop: conditional
+    escalation_triggers:
+      - confidence_below: 0.7
+      - error_detected: true
+    override_capability: true
+    kill_switch: true
+  recordkeeping:
+    audit_logging: true
+    log_format: structured_json
+    retention_period: 6y
+    log_contents:
+      - prompts_and_responses
+      - tool_calls
+      - decision_pathways
+      - model_version
+      - timestamps
+    immutable: true
+  model_risk:
+    inventory_id: GHOST-MRM-001
+    validation_cadence: quarterly
+    validation_type: full
+    conceptual_soundness: knowledge/hackathon-rubric.md
+    ongoing_monitoring: true
+    outcomes_analysis: true
+    drift_detection: true
+  data_governance:
+    pii_handling: redact
+    data_classification: confidential
+    consent_required: true
+    cross_border: false
+    bias_testing: true
+    lda_search: false
+  communications:
+    type: correspondence
+    pre_review_required: false
+    fair_balanced: true
+    no_misleading: true
+    disclosures_required: true
+  vendor_management:
+    due_diligence_complete: true
+    soc_report_required: true
+    vendor_ai_notification: true
+    subcontractor_assessment: true
+delegation:
+  mode: auto
+tags:
+  - hackathon
+  - security
+  - red-team
+  - gitagent
+metadata:
+  architecture: layered-audit
+  node_compatible: true
+  target_runtime: gitclaw-clawless

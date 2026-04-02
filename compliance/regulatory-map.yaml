@@ -1,0 +1,29 @@
+mappings:
+  - capability: security_audit_reporting
+    rules:
+      - id: finra-2210
+        name: Communications with the Public
+        controls:
+          - fair_balanced_language_check
+          - no_misleading_claims_check
+      - id: sec-17a-4
+        name: Records Retention
+        controls:
+          - immutable_audit_log_check
+          - retention_period_enforcement
+  - capability: model_governance
+    rules:
+      - id: sr-11-7
+        name: Model Risk Management
+        controls:
+          - quarterly_validation
+          - ongoing_monitoring
+          - drift_detection
+  - capability: data_handling
+    rules:
+      - id: sec-reg-s-p
+        name: Customer Privacy
+        controls:
+          - pii_redaction
+          - confidential_classification
+          - consent_required

@@ -1,0 +1,43 @@
+name: gitagent-parser
+description: Parse gitagent manifest and markdown policy files into structured audit inputs.
+version: 0.1.0
+input_schema:
+  type: object
+  properties:
+    root:
+      type: string
+      description: Relative or absolute path to target repository root.
+    include_skills:
+      type: boolean
+      description: Include scanning of all skills/**/SKILL.md files.
+      default: true
+output_schema:
+  type: object
+  properties:
+    manifest:
+      type: object
+    soul:
+      type: object
+    rules:
+      type: object
+    skills:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          path:
+            type: string
+          description:
+            type: string
+          metadata:
+            type: object
+implementation:
+  type: script
+  path: gitagent-parser.js
+  runtime: node
+annotations:
+  requires_confirmation: false
+  read_only: true
+  cost: low

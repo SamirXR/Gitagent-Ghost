@@ -1,0 +1,19 @@
+schedule:
+  - type: full_validation
+    cadence: quarterly
+    last_completed: null
+    owner: ghost-auditor
+    sr_11_7_elements:
+      - conceptual_soundness
+      - ongoing_monitoring
+      - outcomes_analysis
+  - type: communications_review
+    cadence: monthly
+    last_completed: null
+    owner: repository-owner
+    finra_rules: [2210]
+  - type: recordkeeping_review
+    cadence: monthly
+    last_completed: null
+    owner: repository-owner
+    sec_rules: [17a-4]

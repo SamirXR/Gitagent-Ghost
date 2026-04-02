@@ -1,0 +1,11 @@
+name: gitagent-parser
+description: "A tool that parses a given directory and returns a JSON payload containing the agent.yaml, SOUL.md, RULES.md, and all SKILL.md files. Ideal for immediately ingesting the full policy surface of a target agent."
+parameters:
+  type: object
+  properties:
+    target_dir:
+      type: string
+      description: "The absolute or relative path to the gitagent repository to parse."
+  required:
+    - target_dir
+command: "node ghost/tools/gitagent-parser.cjs {{target_dir}}"
